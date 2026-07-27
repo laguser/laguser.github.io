@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="80" viewBox="0 0 600 80">
+  <rect width="600" height="80" fill="#0d1117"/>
+  <g stroke="#30363d" stroke-width="1">
+    <line x1="0" y1="40" x2="600" y2="40"/>
+  </g>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#7d8590">
+    <text x="20" y="35">building quiet tools for a noisy world</text>
+    <text x="20" y="60" fill="#e6edf3">craft, don't clutter.</text>
+  </g>
+  <circle cx="560" cy="40" r="3" fill="#e6edf3">
+    <animate attributeName="opacity" values="1;0.2;1" dur="1.6s" repeatCount="indefinite"/>
+  </circle>
+</svg>

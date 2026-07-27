@@ -1,431 +1,170 @@
-<!DOCTYPE html>
-<html lang="ru">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>space-smp | Подключение</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4ade80;
-            --primary-glow: rgba(74, 222, 128, 0.15);
-            --bg: #030303;
-            --card-bg: rgba(12, 12, 12, 0.6);
-            --card-border: rgba(255, 255, 255, 0.06);
-            --text: #ececec;
-            --text-dim: #888;
-            --accent: #facc15;
-            --danger: #ef4444;
-            --glass: rgba(255, 255, 255, 0.02);
-        }
-
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-        }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg);
-            background-image: 
-                radial-gradient(circle at 50% -20%, #152515 0%, transparent 50%),
-                radial-gradient(circle at 0% 100%, #0a100a 0%, transparent 40%);
-            color: var(--text);
-            line-height: 1.6;
-            padding: 80px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .container { max-width: 1100px; width: 100%; }
-
-        /* Header / Logo Area */
-        .header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .server-logo {
-            font-size: 3.5rem;
-            font-weight: 800;
-            background: linear-gradient(180deg, #fff 0%, #444 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -2px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));
-        }
-
-        /* Important Alert */
-        .important-box {
-            background: rgba(239, 68, 68, 0.03);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            padding: 24px;
-            border-radius: 20px;
-            margin-bottom: 40px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .important-box h3 { 
-            color: var(--danger); 
-            font-size: 0.9rem;
-            font-weight: 800; 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            margin-bottom: 8px;
-        }
-
-        /* Server IP Card */
-        .ip-card {
-            background: var(--card-bg);
-            border: 1px solid var(--primary-glow);
-            padding: 30px;
-            border-radius: 24px;
-            text-align: center;
-            margin-bottom: 50px;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 0 40px var(--primary-glow);
-        }
-
-        .ip-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(45deg, transparent, rgba(74, 222, 128, 0.05), transparent);
-            pointer-events: none;
-        }
-
-        .ip-label { 
-            font-size: 0.75rem; 
-            text-transform: uppercase; 
-            letter-spacing: 4px; 
-            color: var(--primary); 
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-
-        .ip-value { 
-            font-size: 2.4rem; 
-            font-weight: 800; 
-            color: #fff; 
-            letter-spacing: 1px; 
-            font-family: monospace;
-            text-shadow: 0 0 20px rgba(255,255,255,0.1);
-        }
-
-        /* Quick Download Grid */
-        .pack-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin-bottom: 80px;
-        }
-
-        .pack-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 28px;
-            padding: 45px 35px;
-            text-align: left;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        .pack-card:hover {
-            border-color: rgba(255,255,255,0.15);
-            transform: translateY(-8px);
-            background: rgba(20, 20, 20, 0.8);
-        }
-
-        .pack-card h2 { font-size: 1.6rem; font-weight: 800; color: #fff; }
-        .pack-card p { color: var(--text-dim); font-size: 0.95rem; }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 18px 32px;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            text-decoration: none;
-            gap: 10px;
-        }
-
-        .btn-primary { background: #fff; color: #000; }
-        .btn-primary:hover { transform: scale(1.03); box-shadow: 0 10px 30px rgba(255,255,255,0.1); }
-
-        .btn-modrinth { background: #1bd96a; color: #000; }
-        .btn-accent { background: var(--accent); color: #000; }
-
-        /* Sections */
-        .section-title {
-            font-size: 0.85rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            margin: 60px 0 30px;
-            color: #444;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .section-title::after { content: ''; height: 1px; flex-grow: 1; background: linear-gradient(90deg, #222, transparent); }
-
-        /* Mod Grid */
-        .mod-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 16px;
-        }
-
-        .mod-card {
-            background: var(--glass);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .mod-card:hover {
-            border-color: var(--primary);
-            background: rgba(74, 222, 128, 0.02);
-            transform: scale(1.02);
-        }
-
-        .mod-tag {
-            font-size: 0.65rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            padding: 4px 10px;
-            border-radius: 6px;
-            background: rgba(255,255,255,0.05);
-            color: var(--text-dim);
-            width: fit-content;
-            margin-bottom: 12px;
-        }
-
-        .mod-name { 
-            font-size: 1.2rem; 
-            font-weight: 700; 
-            color: #fff; 
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .mod-version {
-            font-size: 0.7rem;
-            color: var(--primary);
-            background: var(--primary-glow);
-            padding: 2px 8px;
-            border-radius: 5px;
-            font-family: monospace;
-        }
-
-        .mod-desc { 
-            font-size: 0.88rem; 
-            color: var(--text-dim); 
-            margin-bottom: 24px;
-            min-height: 40px;
-        }
-
-        .download-link {
-            text-decoration: none;
-            color: #fff;
-            font-size: 0.85rem;
-            font-weight: 700;
-            padding: 12px;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            text-align: center;
-        }
-
-        .download-link:hover {
-            background: #fff;
-            color: #000;
-            border-color: #fff;
-        }
-
-        footer {
-            margin-top: 120px;
-            text-align: center;
-            opacity: 0.4;
-        }
-
-        @media (max-width: 768px) {
-            .server-logo { font-size: 2.5rem; }
-            .ip-value { font-size: 1.5rem; }
-            .pack-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>laguser — craft, don't clutter</title>
+<meta name="description" content="Nicolas from Geneva. Building quiet tools for a noisy world.">
+<meta name="theme-color" content="#0d1117">
+<link rel="icon" type="image/png" href="assets/avatar.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1117;
+    --bg-soft:#161b22;
+    --border:#30363d;
+    --fg:#e6edf3;
+    --fg-soft:#7d8590;
+    --fg-muted:#6e7681;
+    --accent:#e6edf3;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--fg);font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--border);transition:border-color .2s,color .2s}
+  a:hover{border-color:var(--fg);color:#fff}
+  .wrap{max-width:760px;margin:0 auto;padding:96px 24px 120px}
+  header{display:flex;align-items:center;gap:24px;margin-bottom:56px}
+  header img{width:84px;height:84px;border-radius:50%;border:1px solid var(--border);background:var(--bg-soft)}
+  header .id h1{font-size:22px;font-weight:700;letter-spacing:-.01em}
+  header .id p{color:var(--fg-soft);font-size:13px;margin-top:4px}
+  h2{font-size:13px;font-weight:500;color:var(--fg-soft);text-transform:uppercase;letter-spacing:.14em;margin:48px 0 20px;display:flex;align-items:center;gap:12px}
+  h2::after{content:"";flex:1;height:1px;background:var(--border)}
+  .tagline{font-size:18px;font-weight:500;color:var(--fg);margin-bottom:8px}
+  .tagline .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--fg);vertical-align:middle;margin-left:2px;animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+  .meta{color:var(--fg-muted);font-size:13px;margin-bottom:32px}
+  .meta span{margin-right:14px}
+  .meta span::before{content:"·";margin-right:14px;color:var(--border)}
+  .meta span:first-child::before{display:none}
+  .projects{list-style:none;display:flex;flex-direction:column;gap:2px}
+  .projects li{border:1px solid var(--border);border-radius:6px;background:var(--bg-soft);transition:border-color .2s,transform .2s}
+  .projects li:hover{border-color:var(--fg-soft)}
+  .projects a{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:16px 20px;border-bottom:none;width:100%}
+  .projects a:hover{border-bottom:none}
+  .projects .name{font-weight:500;color:var(--fg)}
+  .projects .desc{color:var(--fg-soft);font-size:13px;margin-top:4px;display:block}
+  .projects .lang{font-size:11px;color:var(--fg-muted);flex-shrink:0;text-transform:uppercase;letter-spacing:.1em}
+  .projects .arrow{color:var(--fg-muted);margin-left:8px;transition:transform .2s,color .2s}
+  .projects li:hover .arrow{color:var(--fg);transform:translateX(2px)}
+  .contacts{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .contacts li{padding:10px 0;display:flex;justify-content:space-between;align-items:baseline}
+  .contacts .k{color:var(--fg-soft);font-size:13px}
+  .contacts .v{font-size:13px}
+  .now{color:var(--fg-soft);font-size:13px;line-height:1.8}
+  .now .line{display:flex;gap:12px}
+  .now .line::before{content:"›";color:var(--fg-muted);flex-shrink:0}
+  footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);color:var(--fg-muted);font-size:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  footer span{color:var(--fg-soft)}
+  @media (max-width:540px){
+    .wrap{padding:56px 18px 80px}
+    header{flex-direction:column;align-items:flex-start;gap:16px}
+    header img{width:64px;height:64px}
+    .projects a{flex-direction:column;align-items:flex-start;gap:4px}
+    .projects .lang{align-self:flex-start}
+  }
+</style>
 </head>
 <body>
+<main class="wrap">
 
-<div class="container">
-    <div class="header">
-        <div class="server-logo">space-smp</div>
-        <p style="color: var(--text-dim); font-weight: 500;">Подключение к космическому приключению</p>
+  <header>
+    <img src="assets/avatar.png" alt="laguser">
+    <div class="id">
+      <h1>laguser</h1>
+      <p>Nicolas · Geneva</p>
     </div>
+  </header>
 
-    <div class="important-box">
-        <h3>Внимание</h3>
-        <p>Для игры на версии 1.21.11 необходимо установить <b>Fabric Loader 0.19.2</b> (или новее) и моды ниже.</p>
-        <p style="font-size: 0.85rem; margin-top: 10px; color: var(--text-dim);">Использование более старых версий загрузчика приведет к ошибке при входе.</p>
-    </div>
+  <p class="tagline">craft, don't clutter<span class="dot" aria-hidden="true"></span></p>
+  <p class="meta">
+    <span>building quiet tools for a noisy world</span>
+    <span>swift · pixels · keys</span>
+  </p>
 
-    <div class="ip-card">
-        <div class="ip-label">Адрес сервера</div>
-        <div class="ip-value">space.20tps.ru</div>
-    </div>
+  <h2>selected work</h2>
+  <ul class="projects">
+    <li>
+      <a href="https://github.com/laguser/ink" target="_blank" rel="noopener">
+        <div>
+          <span class="name">ink</span>
+          <span class="desc">Minimalist markdown editor. Pure focus, pure text.</span>
+        </div>
+        <span class="lang">Swift</span>
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/laguser/soundcloud-tui" target="_blank" rel="noopener">
+        <div>
+          <span class="name">soundcloud-tui</span>
+          <span class="desc">Terminal-based client for a noisier world.</span>
+        </div>
+        <span class="lang">Python</span>
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/laguser/Memora" target="_blank" rel="noopener">
+        <div>
+          <span class="name">Memora</span>
+          <span class="desc">App for language education. Quiet, deliberate.</span>
+        </div>
+        <span class="lang">Python</span>
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/laguser/fastpotions" target="_blank" rel="noopener">
+        <div>
+          <span class="name">fastpotions</span>
+          <span class="desc">Fabric mod for instant potion throwing from inventory.</span>
+        </div>
+        <span class="lang">Java</span>
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/laguser/autorun" target="_blank" rel="noopener">
+        <div>
+          <span class="name">autorun</span>
+          <span class="desc">Elegant, fast startup manager for Windows. WPF / .NET 4.0.</span>
+        </div>
+        <span class="lang">C#</span>
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/laguser/ence-hyprland" target="_blank" rel="noopener">
+        <div>
+          <span class="name">ence-hyprland</span>
+          <span class="desc">Dotfiles for a tiled, key-driven workspace.</span>
+        </div>
+        <span class="lang">Makefile</span>
+      </a>
+    </li>
+  </ul>
 
-    <div class="pack-grid">
-        <div class="pack-card">
-            <h2>Mrpack</h2>
-            <p>Скачать и просто пертащить в modrinth app, prism или multimc.</p>
-            <a href="https://disk.yandex.ru/d/ZYZ2cSLEL6gShg" target="_blank" rel="noopener noreferrer" class="btn btn-modrinth">Скачать</a>
-        </div>
-        <div class="pack-card">
-            <h2>Ручная установка</h2>
-            <p>Скачайте zip-архив для стандартного лаунчера.</p>
-            <a href="https://disk.yandex.ru/d/0Kt7Gg5GdccG7Q" target="_blank" rel="noopener noreferrer" class="btn btn-accent">Скачать</a>
-        </div>
-    </div>
+  <h2>now</h2>
+  <div class="now">
+    <div class="line">heads down on <strong style="color:var(--fg);font-weight:500">ink</strong> — a minimalist markdown editor for macOS</div>
+    <div class="line">listening. writing. shipping slowly.</div>
+    <div class="line">open to interesting conversations</div>
+  </div>
 
-    <div class="section-title">Системные зависимости</div>
-    <div class="mod-grid">
-        <div class="mod-card">
-            <div class="mod-tag">Core</div>
-            <div class="mod-name">Fabric API <span class="mod-version">0.141.4</span></div>
-            <div class="mod-desc">Фундамент для работы всех модификаций.</div>
-            <a href="https://modrinth.com/mod/fabric-api/version/0.141.4+1.21.11" target="_blank" rel="noopener noreferrer" class="download-link">Скачать JAR</a>
-        </div>
-        <div class="mod-card">
-            <div class="mod-tag">Library</div>
-            <div class="mod-name">Architectury <span class="mod-version">19.0.1</span></div>
-            <div class="mod-desc">Необходим для работы сложных игровых систем.</div>
-            <a href="https://modrinth.com/mod/architectury-api/version/19.0.1+fabric" target="_blank" rel="noopener noreferrer" class="download-link">Скачать JAR</a>
-        </div>
-        <div class="mod-card">
-            <div class="mod-tag">Library</div>
-            <div class="mod-name">Carpet <span class="mod-version">19.0.1</span></div>
-            <div class="mod-desc">Необходим для работы сложных игровых систем.</div>
-            <a href="https://modrinth.com/mod/carpet/version/1.4.194" target="_blank" rel="noopener noreferrer" class="download-link">Скачать JAR</a>
-        </div>
-        <div class="mod-card">
-            <div class="mod-tag">Library</div>
-            <div class="mod-name">Animation Lib <span class="mod-version">1.1.7</span></div>
-            <div class="mod-desc">Обеспечивает плавные анимации из Emotecraft и других модов.</div>
-            <a href="https://modrinth.com/mod/player-animation-library/version/1.1.7" target="_blank" rel="noopener noreferrer" class="download-link">Скачать JAR</a>
-        </div>        
-        <div class="mod-card">
-            <div class="mod-tag">Library</div>
-            <div class="mod-name">Carpet-shadow <span class="mod-version">1.1.7</span></div>
-            <div class="mod-desc">Carpet-Аддон для возвращаения механики Линковки Предметов в новые версии Майнкрафта.</div>
-            <a href="https://modrinth.com/mod/player-animation-library/version/1.1.7" target="_blank" rel="noopener noreferrer" class="download-link">Скачать JAR</a>
-        </div>
-        <div class="mod-card">
-            <div class="mod-tag">Library</div>
-            <div class="mod-name">ImageLib <span class="mod-version">0.0.5</span></div>
-            <div class="mod-desc">Библиотека для корректного отображения внутриигровых изображений.</div>
-            <a href="https://modrinth.com/mod/imagelib/version/0.0.5+1.21.11" target="_blank" rel="noopener noreferrer" class="download-link">Скачать JAR</a>
-        </div>
-        <div class="mod-card">
-            <div class="mod-tag">Library</div>
-            <div class="mod-name">CreativeCore <span class="mod-version">2.14.11</span></div>
-            <div class="mod-desc">Техническая библиотека, необходимая для работы многих модов.</div>
-            <a href="https://modrinth.com/mod/creativecore/version/2.14.11" target="_blank" rel="noopener noreferrer" class="download-link">Скачать JAR</a>
-        </div>
-        <div class="mod-card">
-            <div class="mod-tag">Config</div>
-            <div class="mod-name">Cloth Config <span class="mod-version">21.11.153</span></div>
-            <div class="mod-desc">Обеспечивает удобный интерфейс настроек модов.</div>
-            <a href="https://modrinth.com/mod/cloth-config/version/21.11.153+fabric" target="_blank" rel="noopener noreferrer" class="download-link">Скачать JAR</a>
-        </div>
-    </div>
+  <h2>contact</h2>
+  <ul class="contacts">
+    <li>
+      <span class="k">github</span>
+      <span class="v"><a href="https://github.com/laguser" target="_blank" rel="noopener">@laguser</a></span>
+    </li>
+    <li>
+      <span class="k">telegram</span>
+      <span class="v"><a href="https://t.me/laguser" target="_blank" rel="noopener">@laguser</a></span>
+    </li>
+  </ul>
 
-    <div class="section-title">Обязательный контент</div>
-    <div class="mod-grid">
-        <div class="mod-card">
-            <div class="mod-tag">Voice</div>
-            <div class="mod-name">Voice Chat <span class="mod-version">2.6.18</span></div>
-            <div class="mod-desc">Позиционный голосовой чат в игре (нажми V).</div>
-            <a href="https://modrinth.com/mod/simple-voice-chat/version/fabric-1.21.11-2.6.18" target="_blank" rel="noopener noreferrer" class="download-link">Скачать JAR</a>
-        </div>
-        <div class="mod-card">
-            <div class="mod-tag">Social</div>
-            <div class="mod-name">Emotecraft <span class="mod-version">3.2.0</span></div>
-            <div class="mod-desc">Анимации и эмоции персонажа (нажми B).</div>
-            <a href="https://modrinth.com/mod/emotecraft/version/fabric-mc1.21.11-3.2.0" target="_blank" rel="noopener noreferrer" class="download-link">Скачать JAR</a>
-        </div>
-        <div class="mod-card">
-            <div class="mod-tag">Visual</div>
-            <div class="mod-name">CPM <span class="mod-version">0.6.26a</span></div>
-            <div class="mod-desc">Поддержка 3D моделей и кастомных элементов скина.</div>
-            <a href="https://modrinth.com/mod/custom-player-models/version/fabric-1.21.11-0.6.26a" target="_blank" rel="noopener noreferrer" class="download-link">Скачать JAR</a>
-        </div>
-        <div class="mod-card">
-            <div class="mod-tag">Interaction</div>
-            <div class="mod-name">Notes <span class="mod-version">0.4.1</span></div>
-            <div class="mod-desc">Система записок и писем в игровом мире.</div>
-            <a href="https://modrinth.com/mod/notes-mod/version/0.4.1+1.21.11" target="_blank" rel="noopener noreferrer" class="download-link">Скачать JAR</a>
-        </div>
-        <div class="mod-card">
-            <div class="mod-tag">Audio</div>
-            <div class="mod-name">Audio Player <span class="mod-version">2.2.0</span></div>
-            <div class="mod-desc">Проигрывание музыки с пластинок и дисков.</div>
-            <a href="https://modrinth.com/mod/audioplayer/version/fabric-2.2.0+1.21.11" target="_blank" rel="noopener noreferrer" class="download-link">Скачать JAR</a>
-        </div>
-    </div>
+  <footer>
+    <span>less is more</span>
+    <span>geneva · 2026</span>
+  </footer>
 
-    <div class="section-title">Оптимизация и Графика</div>
-    <div class="mod-grid">
-        <div class="mod-card">
-            <div class="mod-tag">FPS</div>
-            <div class="mod-name">Sodium + Iris</div>
-            <div class="mod-desc">Максимальная производительность и шейдеры.</div>
-            <div style="display: flex; gap: 8px;">
-                <a href="https://modrinth.com/mod/sodium/versions?g=1.21.11" target="_blank" rel="noopener noreferrer" class="download-link" style="flex:1">Sodium</a>
-                <a href="https://modrinth.com/mod/iris/versions?g=1.21.11&l=fabric" target="_blank" rel="noopener noreferrer" class="download-link" style="flex:1">Iris</a>
-            </div>
-        </div>
-        <div class="mod-card">
-            <div class="mod-tag">Textures</div>
-            <div class="mod-name">Continuity</div>
-            <div class="mod-desc">Соединение стекол и текстур. Нужен Indium.</div>
-            <a href="https://modrinth.com/mod/continuity/versions?g=1.21.11" target="_blank" rel="noopener noreferrer" class="download-link">Скачать JAR</a>
-        </div>
-        <div class="mod-card">
-            <div class="mod-tag">Utility</div>
-            <div class="mod-name">Zoomify</div>
-            <div class="mod-desc">Умное приближение камеры (нажми C).</div>
-            <a href="https://modrinth.com/mod/zoomify/versions?g=1.21.11" target="_blank" rel="noopener noreferrer" class="download-link">Скачать JAR</a>
-        </div>
-    </div>
-
-    <footer>
-        <p>&copy; 2026 space-smp. Все права защищены.</p>
-    </footer>
-</div>
-
+</main>
 </body>
 </html>
